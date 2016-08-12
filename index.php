@@ -8,31 +8,31 @@
 
 <section class="main">
 	 <form class="search" method="get" >
-		 <input autocomplete="off" id = "categoryId" data-id = "" type="text" placeholder="Search..." />
+		 <input autocomplete="off" id = "categoryId" data-id = "" type="text" placeholder="Search category" />
 		 <ul class="results" >
-			<li id = "categoryId0" class ="categoryliclass" data-id = "" ><a href="index.html"></a></li>
-			<li id = "categoryId1" class ="categoryliclass" data-id = "" ><a href="index.html"></a></li>
-	 		<li id = "categoryId2" class ="categoryliclass" data-id = "" ><a href="index.html"></a></li>
-         	<li id = "categoryId3" class ="categoryliclass" data-id = "" ><a href="index.html"></a></li>
-         	<li id = "categoryId4" class ="categoryliclass" data-id = "" ><a href="index.html"></a></li>
+			<li id = "categoryId0" class ="categoryliclass cl" data-id = "" ><a href="index.html"></a></li>
+			<li id = "categoryId1" class ="categoryliclass cl" data-id = "" ><a href="index.html"></a></li>
+	 		<li id = "categoryId2" class ="categoryliclass cl" data-id = "" ><a href="index.html"></a></li>
+         	<li id = "categoryId3" class ="categoryliclass cl" data-id = "" ><a href="index.html"></a></li>
+         	<li id = "categoryId4" class ="categoryliclass cl" data-id = "" ><a href="index.html"></a></li>
 		 </ul>
 	 </form>
 </section>
 
 <section class="main">
 	 <form class="search" method="get" >
-		 <input autocomplete="off" id = "productId" data-id = "" type="text" placeholder="Search..." />
+		 <input autocomplete="off" id = "productId" data-id = "" type="text" placeholder="Search product" />
 		 <ul class="results" >
-			<li id = "productId0" class ="productliclass" data-id = "" ><a href="index.html"></a></li>
-			<li id = "productId1" class ="productliclass" data-id = "" ><a href="index.html"></a></li>
-	 		<li id = "productId2" class ="productliclass" data-id = "" ><a href="index.html"></a></li>
-         	<li id = "productId3" class ="productliclass" data-id = "" ><a href="index.html"></a></li>
-         	<li id = "productId4" class ="productliclass" data-id = "" ><a href="index.html"></a></li>
+			<li id = "productId0" class ="productliclass cl" data-id = "" ><a href="index.html"></a></li>
+			<li id = "productId1" class ="productliclass cl" data-id = "" ><a href="index.html"></a></li>
+	 		<li id = "productId2" class ="productliclass cl" data-id = "" ><a href="index.html"></a></li>
+         	<li id = "productId3" class ="productliclass cl" data-id = "" ><a href="index.html"></a></li>
+         	<li id = "productId4" class ="productliclass cl" data-id = "" ><a href="index.html"></a></li>
 		 </ul>
 	 </form>
 </section>
 
-<div id = "productInfo" style="text-align:center">
+<div id = "productInfo" style="text-align:center;margin-top:30px;">
     <span>Product Name:</span><span id = "productName"></span>
     <br>
     <span>Product Price:</span><span id = "productPrice"></span>
@@ -172,6 +172,14 @@ $('.productliclass').click(function(event) {
         success: function(result){
         printProductInfo(result);
     }});
+});
+
+$(document).click(function(){
+  $(".cl").hide();
+});
+
+$(".cl").click(function(e){
+  e.stopPropagation();
 });
 
 </script>
