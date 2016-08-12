@@ -60,13 +60,6 @@ else {
 	$finalresult = $con->query("select productId , productName from products where productName like '%".$_GET['text']."%' limit 5");
 }
 
-/*while($r = mysqli_fetch_assoc($finalresult)) {
-    	echo $r['productId'];
-    	echo " ";
-    	echo $r['productName'];
-    	echo "\n";
-	}*/
-
 $rows = array();
 while($r = mysqli_fetch_assoc($finalresult)) {
     $rows[] = $r;
