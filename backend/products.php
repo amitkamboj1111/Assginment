@@ -1,63 +1,47 @@
 <?php
 
-// get the HTTP method, path and body of the request
-$method = $_SERVER['REQUEST_METHOD'];
-
 // connect to the mysql database
-$user = 'root';
-$password = 'root';
-$db = 'search';
-$host = '127.0.0.1';
-$port = 8889;
-
-$con=mysqli_connect($host,$user,$password,$db,$port);
-// Check connection
-if (mysqli_connect_errno())
-  {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
+include 'connectDB.php';
 
 if (isset($_GET['categoryId'])) {
         $query = $_GET['categoryId'];
 
-$currlevel = $con->query("SELECT level FROM categories where categoryId = ".$query);
+$currlevel = $con->query("SELECT level FROM categories where categoryId = ".$query); //check current level of category id
 
-//var_dump($currlevel);
 $currlevel = mysqli_fetch_array($currlevel , MYSQLI_ASSOC);
 $currlevel = $currlevel['level'];
 
-$temp1 = array($query);
-$temp2 = array();
+$mainContainer = array($query);
+$tempContainer = array();
 
 if ($currlevel == 1) {
-	$result = $con->query("SELECT subCategoryId FROM catSubcatMapping where categoryId = ".$query);
+	$result = $con->query("SELECT subCategoryId FROM catSubcatMappinglevel1 where categoryId = ".$query);
 	while($r = mysqli_fetch_assoc($result)) {
-    	array_push($temp2, $r['subCategoryId']);
+    	array_push($tempContainer, $r['subCategoryId']);
 	}
-	$str = implode($temp2, ",");
+	$str = implode($tempContainer, ",");
 
-	$q = $con->query("SELECT subCategoryId FROM catSubcatMapping where categoryId in (".$str.")");
+	$q = $con->query("SELECT subCategoryId FROM catSubcatMappinglevel2 where categoryId in (".$str.")");
 
 	while($r = mysqli_fetch_assoc($q)) {
-    	array_push($temp1, $r['subCategoryId']);
+    	array_push($mainContainer, $r['subCategoryId']);
 	}
-	foreach($temp2 as $catId) {
-    	array_push($temp1, $catId);
+	foreach($tempContainer as $catId) {
+    	array_push($mainContainer, $catId);
 	}
 }
 elseif ($currlevel == 2) {
-	$result = $con->query("SELECT subCategoryId FROM catSubcatMapping where categoryId = ".$query);
+	$result = $con->query("SELECT subCategoryId FROM catSubcatMappinglevel2 where categoryId = ".$query);
 	while($r = mysqli_fetch_assoc($result)) {
-    	array_push($temp1, $r['subCategoryId']);
+    	array_push($mainContainer, $r['subCategoryId']);
 	}
 }
-//var_dump($temp1);
-$temp1 = implode($temp1 , ",");
-$finalresult = $con->query("select productId , productName from products where productId in (SELECT productId FROM catProdMapping where categoryId in (".$temp1.")) and productName like '%".$_GET['text']."%' limit 5");
-//var_dump($result);
+
+$mainContainer = implode($mainContainer , ",");
+$finalresult = $con->query("select productId , productName from products where productId in (SELECT productId FROM catProdMapping where categoryId in (".$mainContainer.")) and productName like '%".$_GET['text']."%' ORDER BY LOCATE('".$_GET['text']."', productName) limit 5");
 }
 else {
-	$finalresult = $con->query("select productId , productName from products where productName like '%".$_GET['text']."%' limit 5");
+	$finalresult = $con->query("select productId , productName from products where productName like '%".$_GET['text']."%' ORDER BY LOCATE('".$_GET['text']."', productName) limit 5");
 }
 
 $rows = array();
